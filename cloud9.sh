@@ -113,7 +113,7 @@ print_message "$GREEN" "✅ Cloud9 image pulled."
 # ======================================================
 print_message "$YELLOW" "🚀 Step 4: Running Cloud9 Server..."
 sudo docker run -d \
-  --name=Priv8-Tools \
+  --name=Localhoazt-Tools \
   -e USERNAME="$USERNAME" \
   -e PASSWORD="$PASSWORD" \
   -p ${PORT}:${PORT} \
@@ -133,7 +133,7 @@ sleep 60
 # STEP 5: CONFIGURE CLOUD9
 # ======================================================
 print_message "$YELLOW" "⚙️ Step 5: Configuring Cloud9 container..."
-sudo docker exec Priv8-Tools /bin/bash -c "
+sudo docker exec Localhoazt-Tools /bin/bash -c "
   apt update -y && \
   apt upgrade -y && \
   apt install wget php-cli php-curl -y && \
@@ -152,7 +152,7 @@ print_message "$GREEN" "✅ Cloud9 configured."
 # STEP 6: RESTART CONTAINER
 # ======================================================
 print_message "$YELLOW" "♻ Restarting Cloud9 container..."
-sudo docker restart Priv8-Tools
+sudo docker restart Localhoazt-Tools
 if [ $? -ne 0 ]; then
   print_message "$RED" "❌ Failed to restart Cloud9."
   exit 1
