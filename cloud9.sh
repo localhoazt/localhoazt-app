@@ -57,10 +57,10 @@ if [[ "$OS" != "ubuntu" && "$OS" != "debian" ]]; then
 fi
 
 # ======================================================
-# STEP 1
+# STEP 1: UPDATE SYSTEM
 # ======================================================
 print_message "$YELLOW" "⚙️ Step 1: Updating system..."
-sudo apt update -y && sudo apt upgrade -y && sudo apt install snapd git -y
+sudo apt update -y && sudo apt upgrade -y && sudo apt install git curl -y
 if [ $? -ne 0 ]; then
   print_message "$RED" "❌ Failed to update system."
   exit 1
@@ -68,20 +68,39 @@ fi
 print_message "$GREEN" "✅ System updated."
 
 # ======================================================
-# STEP 2
+# STEP 2: INSTALL DOCKER PROPERLY
 # ======================================================
-print_message "$YELLOW" "🐳 Step 2: Installing Docker..."
-sudo snap install docker
+print_message "$YELLOW" "🐳 Step 2: Installing Docker (Official Repo)..."
+
+# Remove docker snap if exists
+if snap list | grep -q docker; then
+  print_message "$YELLOW" "⚠ Found Docker SNAP version. Removing..."
+  sudo snap remove docker
+fi
+
+# Install Docker official
+curl -fsSL https://get.docker.com -o get-docker.sh
+sudo sh get-docker.sh
+
+# Enable docker daemon
+sudo systemctl enable docker
+sudo systemctl start docker
+
+# Add user to docker group
+sudo usermod -aG docker $USER
+
 if [ $? -ne 0 ]; then
   print_message "$RED" "❌ Failed to install Docker."
   exit 1
 fi
-print_message "$GREEN" "✅ Docker installed."
+
+print_message "$GREEN" "✅ Docker installed and service running."
+sleep 3
 
 # ======================================================
-# STEP 3
+# STEP 3: PULL CLOUD9 IMAGE
 # ======================================================
-print_message "$YELLOW" "📥 Step 3: Pulling Cloud9 image..."
+print_message "$YELLOW" "📥 Step 3: Pulling Cloud9 Docker image..."
 sudo docker pull lscr.io/linuxserver/cloud9
 if [ $? -ne 0 ]; then
   print_message "$RED" "❌ Failed to pull Cloud9 image."
@@ -90,7 +109,7 @@ fi
 print_message "$GREEN" "✅ Cloud9 image pulled."
 
 # ======================================================
-# STEP 4
+# STEP 4: RUN CLOUD9
 # ======================================================
 print_message "$YELLOW" "🚀 Step 4: Running Cloud9 Server..."
 sudo docker run -d \
@@ -111,7 +130,7 @@ print_message "$YELLOW" "⏳ Waiting 1 minute..."
 sleep 60
 
 # ======================================================
-# STEP 5
+# STEP 5: CONFIGURE CLOUD9
 # ======================================================
 print_message "$YELLOW" "⚙️ Step 5: Configuring Cloud9 container..."
 sudo docker exec Priv8-Tools /bin/bash -c "
@@ -130,7 +149,7 @@ fi
 print_message "$GREEN" "✅ Cloud9 configured."
 
 # ======================================================
-# STEP 6
+# STEP 6: RESTART CONTAINER
 # ======================================================
 print_message "$YELLOW" "♻ Restarting Cloud9 container..."
 sudo docker restart Priv8-Tools
@@ -141,7 +160,7 @@ fi
 print_message "$GREEN" "✅ Cloud9 container restarted."
 
 # ======================================================
-# FINAL INFO
+# FINAL OUTPUT
 # ======================================================
 PUBLIC_IP=$(curl -s ifconfig.me)
 
@@ -152,4 +171,5 @@ print_message "$YELLOW" "🌍 Access Cloud9: http://$PUBLIC_IP:$PORT"
 print_message "$YELLOW" "👤 Username: $USERNAME"
 print_message "$YELLOW" "🔑 Password: $PASSWORD"
 print_message "$YELLOW" "==========================================="
-sudo rm -rf install-cloud9.sh c9.sh
+
+sudo rm -rf install-cloud9.sh c9.sh get-docker.sh
