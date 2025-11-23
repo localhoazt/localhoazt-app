@@ -72,8 +72,9 @@ print_message "$GREEN" "✅ System updated."
 # ======================================================
 print_message "$YELLOW" "🐳 Step 2: Installing Docker Official..."
 
-# Remove old docker
-sudo apt remove -y docker docker-engine docker.io containerd runc
+# Remove old docker safely (no errors even if packages don't exist)
+sudo apt remove -y docker docker.io docker-doc docker-compose docker-compose-v2 || true
+sudo apt autoremove -y || true
 
 # Install docker official
 curl -fsSL https://get.docker.com | sudo bash
@@ -114,7 +115,7 @@ sudo docker run -d \
   --name=Localhoazt-Tools \
   -e USERNAME="$USERNAME" \
   -e PASSWORD="$PASSWORD" \
-  -p ${PORT}:${PORT} \
+  -p ${PORT}:8000 \
   lscr.io/linuxserver/cloud9:latest
 
 if [ $? -ne 0 ]; then
