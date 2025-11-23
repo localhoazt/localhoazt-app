@@ -121,7 +121,7 @@ fi
 print_message "$BLUE" "==========================================="
 print_message "$GREEN" "🎉 Cloud9 Setup Completed Successfully 🎉"
 print_message "$BLUE" "==========================================="
-print_message "$YELLOW" "🌟 Access Cloud9 at: http://$PUBLIC_IP:8000"
+print_message "$YELLOW" "🌟 Access Cloud9 at: http://$PUBLIC_IP:8969"
 print_message "$YELLOW" "🔑 Username: $USERNAME"
 print_message "$YELLOW" "🔑 Password: $PASSWORD"
 print_message "$YELLOW" "=========================================="
