@@ -13,7 +13,7 @@ YELLOW="\033[1;33m"
 RED="\033[1;31m"
 
 print_message "$BLUE" "================================================="
-print_message "$GREEN" "🚀 Cloud9 Installation Script By Priv8 Tools 🌟"
+print_message "$GREEN" "🚀 Cloud9 Installation Script By Priv8 Tools and Recoded By localhoazt🌟"
 print_message "$BLUE" "================================================="
 
 # ======================================================
