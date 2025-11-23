@@ -13,7 +13,7 @@ YELLOW="\033[1;33m"
 RED="\033[1;31m"
 
 print_message "$BLUE" "================================================="
-print_message "$GREEN" "🚀 Cloud9 Installation Script By Priv8 Tools 🌟"
+print_message "$GREEN" "🚀 Cloud9 Installation Script By Priv8 Tools And Recoded By Localhoazt🌟"
 print_message "$BLUE" "================================================="
 
 # ======================================================
@@ -114,7 +114,7 @@ sudo docker run -d \
   --name=Localhoazt-Tools \
   -e USERNAME="$USERNAME" \
   -e PASSWORD="$PASSWORD" \
-  -p ${PORT}:8000 \
+  -p ${PORT}:${PORT} \
   lscr.io/linuxserver/cloud9:latest
 
 if [ $? -ne 0 ]; then
